@@ -12,7 +12,7 @@ public class RocGreaterThanDaysAfterPcr {
  
     static public void main(String args[]) throws IOException {
         
-        SeroCaseFinder scf = new SeroCaseFinder(new File(args[0]));
+        SeroCaseFinder scf = new SeroCaseFinder(new File(args[0]), 99);
         List<SeroCase> seroCases = scf.getAll();
         
         System.out.print(String.format("%s,",

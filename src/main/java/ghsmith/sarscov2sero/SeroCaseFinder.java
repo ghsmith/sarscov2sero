@@ -16,10 +16,12 @@ import org.apache.commons.csv.CSVRecord;
 public class SeroCaseFinder {
 
     File file;
+    int daysAfterPcrToUseIfNull;
     List<SeroCase> seroCases;
 
-    public SeroCaseFinder(File file) {
+    public SeroCaseFinder(File file, int daysAfterPcValueToUseIfNull) {
         this.file = file;
+        this.daysAfterPcrToUseIfNull = daysAfterPcValueToUseIfNull;
     }
     
     public List<SeroCase> getAll() throws IOException {
@@ -30,7 +32,7 @@ public class SeroCaseFinder {
                 SeroCase seroCase = new SeroCase();
                 seroCases.add(seroCase);
                 seroCase.caseId = csvRecord.get("caseId");
-                seroCase.daysAfterPcr = csvRecord.get("daysAfterPcr") != null && csvRecord.get("daysAfterPcr").length() > 0 ? Integer.valueOf(csvRecord.get("daysAfterPcr")) : 0;
+                seroCase.daysAfterPcr = csvRecord.get("daysAfterPcr") != null && csvRecord.get("daysAfterPcr").length() > 0 ? Integer.valueOf(csvRecord.get("daysAfterPcr")) : daysAfterPcrToUseIfNull;
                 seroCase.standardResult = csvRecord.get("standardResult");
                 seroCase.ourResult = Float.valueOf(csvRecord.get("ourResult"));
             }
