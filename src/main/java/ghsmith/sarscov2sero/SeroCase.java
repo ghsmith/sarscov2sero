@@ -1,10 +1,16 @@
 package ghsmith.sarscov2sero;
 
+import java.sql.Date;
+
 /**
  *
  * @author Geoffrey H. Smith, MD
  */
 public class SeroCase {
+
+    public String longAccNo;
+    public String labelAccNo;
+    public Date collectionDt;
 
     public String caseId;
     public int daysAfterPcr;

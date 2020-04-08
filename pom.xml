@@ -12,6 +12,12 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.7</version>
@@ -28,13 +34,13 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
+                        <!--configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ghsmith.transfusionparser.Parser01</mainClass>
+                                    <mainClass></mainClass>
                                 </transformer>
                             </transformers>
-                        </configuration>
+                        </configuration-->
                     </execution>
                 </executions>
                 <configuration>
