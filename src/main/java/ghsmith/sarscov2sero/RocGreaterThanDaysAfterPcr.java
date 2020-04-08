@@ -26,7 +26,7 @@ public class RocGreaterThanDaysAfterPcr {
         }
         System.out.println();
 
-        for(float cutOff = 0; cutOff < 1.4; cutOff+=0.01) {
+        for(float cutOff = 0; cutOff < 1.6; cutOff += 0.01) {
             final float finalCutOff = cutOff;
             System.out.print(String.format("%3.2f,",
                 finalCutOff
@@ -67,7 +67,7 @@ public class RocGreaterThanDaysAfterPcr {
             float auc = 0;
             float lastX = -1;
             float lastY = -1;
-            for(float cutOff = 0; cutOff < 1.4; cutOff+=0.01) {
+            for(float cutOff = 0; cutOff < 1.6; cutOff += 0.01) {
                 final float finalCutOff = cutOff;
                 long countStandardNonPos = seroCases.stream().filter(seroCase -> seroCase.daysAfterPcr >= finalDaysAfterPcrCutOff && !seroCase.standardResult.equals("positive")).count();
                 long countStandardNonPosGteCutoff = seroCases.stream().filter(seroCase -> seroCase.daysAfterPcr >= finalDaysAfterPcrCutOff && !seroCase.standardResult.equals("positive") && seroCase.ourResult >= finalCutOff).count();
