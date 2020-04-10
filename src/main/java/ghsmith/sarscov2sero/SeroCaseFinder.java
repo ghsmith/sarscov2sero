@@ -37,15 +37,41 @@ public class SeroCaseFinder {
         
         pstmt0 = conn.prepareStatement(
               "select "
-            + "  accession_nbr long_acc_no, "
-            + "  substr(accession_nbr, 3, 3) || substr(accession_nbr, 9, 1) || substr(accession_nbr, 10, 3) || substr(accession_nbr, 14, 5) label_acc_no, "
-            + "  min(specimen_collect_dt) collect_dt "
+            + "  long_acc_no, "
+            + "  label_acc_no, "
+            + "  collect_dt, "
+            + "  ( "
+            + "    select "
+            + "      max(specimen_collect_dt) keep(dense_rank first order by result_lab_tval desc, specimen_collect_dt desc) "
+            + "    from "
+            + "      ehcvw.fact_result_lab "
+            + "    where "
+            + "      structured_result_type_key = 75988 "
+            + "      and patient_key in (select patient_key from ehcvw.lkp_patient where empi_nbr = (select empi_nbr from ehcvw.lkp_patient where patient_key = frl.patient_key)) "
+            + "  ) pcr_collect_dt, "
+            + "  ( "
+            + "    select "
+            + "      max(result_lab_tval) keep(dense_rank first order by result_lab_tval desc, specimen_collect_dt desc) "
+            + "    from "
+            + "      ehcvw.fact_result_lab "
+            + "    where "
+            + "      structured_result_type_key = 75988 "
+            + "      and patient_key in (select patient_key from ehcvw.lkp_patient where empi_nbr = (select empi_nbr from ehcvw.lkp_patient where patient_key = frl.patient_key)) "
+            + "  ) pcr_result_lab_tval "
             + "from "
-            + "  ehcvw.fact_result_lab "
-            + "where "
-            + "  accession_nbr = ? "
-            + "group by "
-            + "  accession_nbr "
+            + "  ( "
+            + "    select "
+            + "      accession_nbr long_acc_no, "
+            + "      substr(accession_nbr, 3, 3) || substr(accession_nbr, 9, 1) || substr(accession_nbr, 10, 3) || substr(accession_nbr, 14, 5) label_acc_no, "
+            + "      min(specimen_collect_dt) collect_dt, "
+            + "      min(patient_key) patient_key "
+            + "    from "
+            + "      ehcvw.fact_result_lab "
+            + "    where "
+            + "      accession_nbr = ? "
+            + "    group by "
+            + "      accession_nbr "
+            + "  ) frl "
         );
 
     }
@@ -82,6 +108,8 @@ public class SeroCaseFinder {
             seroCase.longAccNo = rs.getString("long_acc_no");
             seroCase.labelAccNo = rs.getString("label_acc_no");
             seroCase.collectionDt = rs.getDate("collect_dt");
+            seroCase.pcrCollectionDt = rs.getDate("pcr_collect_dt");
+            seroCase.pcrResult = rs.getString("pcr_result_lab_tval");
         }
         rs.close();
         return seroCase;
