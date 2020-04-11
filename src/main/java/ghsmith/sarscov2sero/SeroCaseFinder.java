@@ -79,14 +79,23 @@ public class SeroCaseFinder {
     public List<SeroCase> getAll() throws IOException {
         if(seroCases == null) {
             seroCases = new ArrayList<>();
+            float negPoolMean = 0;
+            float negPoolSd = 0;
             CSVParser csvParser = CSVParser.parse(file, Charset.defaultCharset(), CSVFormat.DEFAULT.withFirstRecordAsHeader());
             for(CSVRecord csvRecord : csvParser) {
+                if(csvRecord.get("run") != null && csvRecord.get("run").length() > 0) {
+                    negPoolMean = Float.valueOf(csvRecord.get("negpool_mean"));
+                    negPoolSd = Float.valueOf(csvRecord.get("negpool_sd"));
+                    continue;
+                }
+                if(csvRecord.get("censored (reason)") != null && csvRecord.get("censored (reason)").length() > 0) { continue; }
                 SeroCase seroCase = new SeroCase();
                 seroCases.add(seroCase);
                 seroCase.caseId = csvRecord.get("caseId");
                 seroCase.daysAfterPcr = csvRecord.get("daysAfterPcr") != null && csvRecord.get("daysAfterPcr").length() > 0 ? Integer.valueOf(csvRecord.get("daysAfterPcr")) : daysAfterPcrToUseIfNull;
                 seroCase.standardResult = csvRecord.get("standardResult");
                 seroCase.ourResult = Float.valueOf(csvRecord.get("ourResult"));
+                seroCase.ourResultSdAboveNegPoolMean = (seroCase.ourResult - negPoolMean) / negPoolSd;
             }
         }
         return seroCases;
