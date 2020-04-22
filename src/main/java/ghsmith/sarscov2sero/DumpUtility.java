@@ -34,7 +34,7 @@ public class DumpUtility {
         while ((line = stdIn.readLine()) != null && line.length() != 0) {
             SeroCase seroCase = scf.getThinByLabelAccNo(line.substring(0, 12));
             if(seroCase != null) {
-                System.out.println(String.format("%s,%s,%s,%tD %tR,%tD %tR,%s", line, seroCase.labelAccNo, seroCase.longAccNo, seroCase.collectionDt, seroCase.collectionDt, seroCase.pcrCollectionDt, seroCase.pcrCollectionDt, seroCase.pcrResult));
+                System.out.println(String.format("%s,%tD %tR,%tD %tR,%s,%s,%s", seroCase.pcrResult, seroCase.pcrCollectionDt, seroCase.pcrCollectionDt, seroCase.collectionDt, seroCase.collectionDt, line, seroCase.labelAccNo, seroCase.longAccNo));
             }
         }
         
