@@ -88,7 +88,7 @@ public class SeroCaseFinder {
                 seroCase.daysAfterPcr = !csvRecord.get("daysAfterPcrCalcGS").equals("none") ? Integer.valueOf(csvRecord.get("daysAfterPcrCalcGS")) : daysAfterPcrToUseIfNull;
                 seroCase.standardResult = csvRecord.get("pcrResult");
                 seroCase.ourResult = Float.valueOf(csvRecord.get("serologyResult"));
-                seroCase.ourResultSdAboveNegPoolMean = Float.valueOf(csvRecord.get("sdsAboveNegPoolMeanCalcGS"));
+                seroCase.ourResultSdAboveNegPoolMean = csvRecord.get("sdsAboveNegPoolMeanCalcGS") != null && csvRecord.get("sdsAboveNegPoolMeanCalcGS").length() > 0 ? Float.valueOf(csvRecord.get("sdsAboveNegPoolMeanCalcGS")) : null;
             }
         }
         return seroCases;

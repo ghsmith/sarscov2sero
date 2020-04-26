@@ -17,7 +17,7 @@ public class SeroCase {
     public String caseId;
     public int daysAfterPcr;
     public String standardResult;
-    public float ourResult;
-    public float ourResultSdAboveNegPoolMean;
+    public Float ourResult;
+    public Float ourResultSdAboveNegPoolMean;
     
 }
